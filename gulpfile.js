@@ -17,9 +17,6 @@ const baseLibsPackConfig = {
     libs: [
         { src: 'lodash', expose: 'lodash' },
         { src: 'async', expose: 'async' },
-        { src: 'phaser/build/custom/pixi', expose: 'phaser' },
-        { src: 'phaser/build/custom/p2', expose: 'p2' },
-        { src: 'phaser/build/custom/phaser-split', expose: 'phaser' },
         { src: 'keyboardjs', expose: 'keyboardjs' }
     ],
     savePath: './dist/base_libs.js'

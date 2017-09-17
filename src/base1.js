@@ -5,3 +5,5 @@
  * @date 17/9/17
  */
 'use strict';
+
+console.log(Phaser);
