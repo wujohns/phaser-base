@@ -26,7 +26,7 @@ const packageConfig = {
         // 基础工具
         'lodash': '^4.17.4',
         'async': '^2.5.0',
-        'phaser': '^2.6.2',
+        'phaser-ce': '^2.8.7',
         'keyboardjs': '^2.3.4'
     },
 
@@ -43,8 +43,9 @@ const packageConfig = {
         'babel-preset-stage-2': '^6.24.1',
         'babel-plugin-transform-decorators-legacy': '^1.3.4',
 
-        // 其他loader（json、image）
-        'json-loader': '^0.5.7'
+        // 其他loader（json、image等）
+        'json-loader': '^0.5.7',
+        'expose-loader': '^0.7.3'
     }
 };
 

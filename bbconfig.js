@@ -22,7 +22,34 @@ class BBConfig {
         if (config.uglify) {
             plugins.push(new UglifyJsPlugin());
         }
+        // 将 pixi、p2、phaser 暴露在全局变量中
+        const rules = [
+            {
+                test: require.resolve('phaser-ce/build/custom/pixi.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'PIXI'
+                }]
+            },
+            {
+                test: require.resolve('phaser-ce/build/custom/p2.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'p2'
+                }]
+            },
+            {
+                test: require.resolve('phaser-ce/build/custom/phaser-split.js'),
+                use: [{
+                    loader: 'expose-loader',
+                    options: 'Phaser'
+                }]
+            }
+        ];
         const webpackConfig = {
+            module: {
+                rules: rules
+            },
             plugins: plugins
         };
         if (!!config.sourceMap) {
