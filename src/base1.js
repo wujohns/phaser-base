@@ -6,4 +6,19 @@
  */
 'use strict';
 
-console.log(Phaser);
+const preload = () => {
+
+};
+
+const create = () => {
+
+};
+
+const game = new Phaser.Game(
+    256, 256,
+    Phaser.CANVAS, 'phaser',
+    {
+        preload: perload,
+        create: create
+    }
+);
