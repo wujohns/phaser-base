@@ -86,7 +86,7 @@ class GameScene {
      * 待确定部分
      */
     render () {
-        // TODO
+        // TODO 目前没有看出与 update 有哪些区别，需要在之后进行区分
     }
 }
 
