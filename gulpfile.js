@@ -31,7 +31,8 @@ const baseLibsExternals = webpack2b.getExternals(baseLibsPackConfig);
 const pagesPackConfig = {
     pages: [
         { name: 'base1', src: ['./src/base1.js'] },
-        { name: 'base2', src: ['./src/base2.js'] }
+        { name: 'base2', src: ['./src/base2.js'] },
+        { name: 'base3', src: ['./src/base3/index.js'] }
     ],
     destDir: './dist/pages',
     externals: baseLibsExternals
