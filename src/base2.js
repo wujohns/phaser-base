@@ -10,7 +10,6 @@ const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + mi
 
 class GameScene {
     constructor () {
-        // TODO 增加渲染部分（update、render，案例：sprites/move a sprite.js）
         this.game = new Phaser.Game(
             512, 512,
             Phaser.CANVAS, 'phaser',
