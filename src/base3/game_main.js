@@ -61,6 +61,7 @@ class GameMain {
         this.door = this.game.add.sprite(32, 0, 'train', 'door.png');
 
         // 史莱姆
+        // TODO 采用 group 逻辑处理
         const spacing = 48;
         const xOffset = 150;
         this.blobs = [];
@@ -82,7 +83,9 @@ class GameMain {
         this.explorer.y = this.game.height / 2 - this.explorer.height / 2;
 
         // 血条
-        
+        // 参照 demo/phaser-examples-master/groups
+        this.healthBar = this.game.add.group();
+        this.healthBar.create();
     }
 
     /**
