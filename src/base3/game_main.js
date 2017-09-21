@@ -36,6 +36,35 @@ class GameMain {
 
         this.explorer.x += 5 * (rightPress - leftPress);
         this.explorer.y += 5 * (downPress - upPress);
+
+        // TODO 边界碰撞判定
+    }
+
+    /**
+     * 史莱姆运动更新
+     * @private
+     */
+    _updateBlobsState () {
+        // TODO 运动与边界碰撞判定
+    }
+
+    /**
+     * 血条状态更新
+     */
+    _updateHealthBarState () {
+        // 检查 blobs 与 explorer 的碰撞
+        const isOverlap = this.physics.arcade.overlap(
+            this.explorer, this.blobs,
+            (explorer, blob) => {
+                // 当 exploer 与 blob 碰撞时
+                explorer.alpha = 0.5;
+                this.outerBar.width -= 1;
+                // blob.kill();  删除 blob（想干掉blob吗）
+            }
+        );
+        if (!isOverlap) {
+            this.explorer.alpha = 1;
+        }
     }
 
     /**
@@ -54,6 +83,10 @@ class GameMain {
      * 创建游戏中涉及的对象并进行初始设定
      */
     create () {
+        // 物理引擎开启与设定（这里不开启重力）
+        this.physics = this.game.physics;
+        this.physics.startSystem(Phaser.Physics.Arcade);
+
         // 地牢
         const dungeon = this.game.add.sprite(0, 0, 'train', 'dungeon.png');
 
@@ -61,15 +94,20 @@ class GameMain {
         this.door = this.game.add.sprite(32, 0, 'train', 'door.png');
 
         // 史莱姆
-        // TODO 采用 group 逻辑处理
         const spacing = 48;
         const xOffset = 150;
-        this.blobs = [];
+        this.blobs = this.game.add.group();
         for (let i = 0; i < 6; i++) {
+            // 创建 blob 对象
             let blob = this.game.add.sprite(0, 0, 'train', 'blob.png');
             blob.x = spacing * i + xOffset;
             blob.y = randomInt(32, this.game.height - blob.height - 32);
-            this.blobs.push(blob);
+
+            this.physics.enable(blob);   // 开启物理引擎支持
+            blob.body.allowGravity = false; // 清除重力影响
+
+            // 将 blob 添加至 blobs
+            this.blobs.add(blob);
         }
 
         // 宝箱
@@ -81,11 +119,23 @@ class GameMain {
         this.explorer = this.game.add.sprite(0, 0, 'train', 'explorer.png');
         this.explorer.x = 68;
         this.explorer.y = this.game.height / 2 - this.explorer.height / 2;
+        this.physics.enable(this.explorer);
+        this.explorer.body.allowGravity = false;
 
         // 血条
-        // 参照 demo/phaser-examples-master/groups
         this.healthBar = this.game.add.group();
-        this.healthBar.create();
+        this.healthBar.x = this.game.width - 170;
+        this.healthBar.y = 6;
+
+        this.innerBar = this.game.add.graphics(0, 0, this.healthBar);
+        this.innerBar.beginFill(0x000000);
+        this.innerBar.drawRect(0, 0, 128, 8);
+        this.innerBar.endFill();
+
+        this.outerBar = this.game.add.graphics(0, 0, this.healthBar);
+        this.outerBar.beginFill(0xFF3300);
+        this.outerBar.drawRect(0, 0, 128, 8);
+        this.outerBar.endFill();
     }
 
     /**
@@ -93,6 +143,7 @@ class GameMain {
      */
     update () {
         this._updateExplorerState();
+        this._updateHealthBarState();
     }
 
     /**
