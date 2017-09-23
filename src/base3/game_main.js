@@ -89,9 +89,12 @@ class GameMain {
 
         // 地牢
         const dungeon = this.game.add.sprite(0, 0, 'train', 'dungeon.png');
+        this.dungeonWall = new Phaser.Rectangle(28, 10, 488, 480);
 
         // 门
         this.door = this.game.add.sprite(32, 0, 'train', 'door.png');
+        this.physics.enable(this.door);
+        this.door.body.allowGravity = false;
 
         // 史莱姆
         const spacing = 48;
@@ -114,6 +117,8 @@ class GameMain {
         this.treasure = this.game.add.sprite(0, 0, 'train', 'treasure.png');
         this.treasure.x = this.game.width - this.treasure.width - 48;
         this.treasure.y = this.game.height / 2 - this.treasure.height / 2;
+        this.treasure.inputEnabled = true;
+        this.treasure.input.enableDrag();
 
         // 探险者
         this.explorer = this.game.add.sprite(0, 0, 'train', 'explorer.png');
@@ -121,6 +126,7 @@ class GameMain {
         this.explorer.y = this.game.height / 2 - this.explorer.height / 2;
         this.physics.enable(this.explorer);
         this.explorer.body.allowGravity = false;
+        this.explorer.body.collideWorldBounds = true;
 
         // 血条
         this.healthBar = this.game.add.group();
