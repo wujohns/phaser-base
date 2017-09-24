@@ -34,18 +34,8 @@ class GameMain {
         const upPress = keyboard.isDown(Phaser.Keyboard.UP) ? 1 : 0;
         const downPress = keyboard.isDown(Phaser.Keyboard.DOWN) ? 1 : 0;
 
-        this.explorer.x += 5 * (rightPress - leftPress);
-        this.explorer.y += 5 * (downPress - upPress);
-
-        // TODO 边界碰撞判定
-    }
-
-    /**
-     * 史莱姆运动更新
-     * @private
-     */
-    _updateBlobsState () {
-        // TODO 运动与边界碰撞判定
+        this.explorer.body.velocity.x = 300 * (rightPress - leftPress);
+        this.explorer.body.velocity.y = 300 * (downPress - upPress);
     }
 
     /**
@@ -68,6 +58,21 @@ class GameMain {
     }
 
     /**
+     * 宝箱状态更新
+     * @private
+     */
+    _updateTreasureState () {
+        // 检查 treasure 与 explorer 的碰撞
+        this.physics.arcade.overlap(
+            this.explorer, this.treasure,
+            (explorer, treasure) => {
+                treasure.x = explorer.x + 8;
+                treasure.y = explorer.y + 8;
+            }
+        );
+    }
+
+    /**
      * 资源加载
      */
     preload () {
@@ -86,10 +91,10 @@ class GameMain {
         // 物理引擎开启与设定（这里不开启重力）
         this.physics = this.game.physics;
         this.physics.startSystem(Phaser.Physics.Arcade);
+        this.physics.arcade.setBounds(28, 10, 480, 480);    // 设置碰撞边界
 
         // 地牢
         const dungeon = this.game.add.sprite(0, 0, 'train', 'dungeon.png');
-        this.dungeonWall = new Phaser.Rectangle(28, 10, 488, 480);
 
         // 门
         this.door = this.game.add.sprite(32, 0, 'train', 'door.png');
@@ -108,6 +113,9 @@ class GameMain {
 
             this.physics.enable(blob);   // 开启物理引擎支持
             blob.body.allowGravity = false; // 清除重力影响
+            blob.body.velocity.setTo(0, 200);   // 速度设定
+            blob.body.bounce.setTo(0, 1);       // 遭遇碰撞后反弹的速度比例
+            blob.body.collideWorldBounds = true;
 
             // 将 blob 添加至 blobs
             this.blobs.add(blob);
@@ -119,6 +127,7 @@ class GameMain {
         this.treasure.y = this.game.height / 2 - this.treasure.height / 2;
         this.treasure.inputEnabled = true;
         this.treasure.input.enableDrag();
+        this.physics.enable(this.treasure);
 
         // 探险者
         this.explorer = this.game.add.sprite(0, 0, 'train', 'explorer.png');
@@ -150,6 +159,7 @@ class GameMain {
     update () {
         this._updateExplorerState();
         this._updateHealthBarState();
+        this._updateTreasureState();
     }
 
     /**
