@@ -55,6 +55,11 @@ class GameMain {
         if (!isOverlap) {
             this.explorer.alpha = 1;
         }
+
+        if (this.outerBar.width <= 0) {
+            // 进入游戏失败场景
+            this.game.state.start('gameLose');
+        }
     }
 
     /**
@@ -70,18 +75,22 @@ class GameMain {
                 treasure.y = explorer.y + 8;
             }
         );
+
+        // 游戏胜利条件判定
+        this.physics.arcade.overlap(
+            this.door, this.treasure,
+            () => {
+                // 进入游戏胜利场景
+                this.game.state.start('gameWin');
+            }
+        );
     }
 
     /**
      * 资源加载
      */
     preload () {
-        this.game.load.atlas(
-            'train',
-            '/dist/images/treasureHunter.png',
-            '/dist/images/treasureHunter.json'
-        );
-        // TODO 添加资源载入进度效果
+        // 已在 gameLoad 中加载
     }
 
     /**
